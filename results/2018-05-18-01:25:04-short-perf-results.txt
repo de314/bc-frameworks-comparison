@@ -1,0 +1,202 @@
+|| Spring Boot Noop
+============================================
+siege -r10 -c25 -d1 http://localhost:13030/noop
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		        7.07 secs
+Data transferred:	        0.00 MB
+Response time:		        0.00 secs
+Transaction rate:	       35.36 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.12
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.02
+Shortest transaction:	        0.00
+ 
+|| Node JS Noop
+============================================
+siege -r10 -c25 -d1 http://localhost:13031/noop
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		        8.07 secs
+Data transferred:	        0.00 MB
+Response time:		        0.00 secs
+Transaction rate:	       30.98 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.12
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.02
+Shortest transaction:	        0.00
+ 
+
+
+
+|| Spring Boot CPU Bound Processing
+============================================
+siege -r5 -c10 -d1 http://localhost:13030/cpu
+** SIEGE 4.0.4
+** Preparing 10 concurrent users for battle.
+The server is now under siege...
+Transactions:		          50 hits
+Availability:		      100.00 %
+Elapsed time:		        4.31 secs
+Data transferred:	        0.00 MB
+Response time:		        0.06 secs
+Transaction rate:	       11.60 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.69
+Successful transactions:          50
+Failed transactions:	           0
+Longest transaction:	        0.19
+Shortest transaction:	        0.00
+ 
+|| Node JS CPU Bound Processing
+============================================
+siege -r5 -c10 -d1 http://localhost:13031/cpu
+** SIEGE 4.0.4
+** Preparing 10 concurrent users for battle.
+The server is now under siege...
+Transactions:		          50 hits
+Availability:		      100.00 %
+Elapsed time:		        6.20 secs
+Data transferred:	        0.00 MB
+Response time:		        0.52 secs
+Transaction rate:	        8.06 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        4.20
+Successful transactions:          50
+Failed transactions:	           0
+Longest transaction:	        1.16
+Shortest transaction:	        0.02
+ 
+
+
+
+|| Spring Boot Artificial Delay
+============================================
+siege -r10 -c25 -d1 http://localhost:13030/sleep
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		       14.11 secs
+Data transferred:	        0.00 MB
+Response time:		        0.51 secs
+Transaction rate:	       17.72 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        9.00
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.52
+Shortest transaction:	        0.50
+ 
+|| Node JS Artificial Delay
+============================================
+siege -r10 -c25 -d1 http://localhost:13031/sleep
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		       14.11 secs
+Data transferred:	        0.00 MB
+Response time:		        0.51 secs
+Transaction rate:	       17.72 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        8.97
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.53
+Shortest transaction:	        0.50
+ 
+
+
+
+|| Spring Boot MySQL Write
+============================================
+siege -r10 -c25 -d1 http://localhost:13030/write
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		        7.14 secs
+Data transferred:	        0.01 MB
+Response time:		        0.01 secs
+Transaction rate:	       35.01 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.40
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.07
+Shortest transaction:	        0.00
+ 
+|| Node JS MySQL Write
+============================================
+siege -r10 -c25 -d1 http://localhost:13031/write
+** SIEGE 4.0.4
+** Preparing 25 concurrent users for battle.
+The server is now under siege...
+Transactions:		         250 hits
+Availability:		      100.00 %
+Elapsed time:		        8.15 secs
+Data transferred:	        0.01 MB
+Response time:		        0.01 secs
+Transaction rate:	       30.67 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        0.35
+Successful transactions:         250
+Failed transactions:	           0
+Longest transaction:	        0.07
+Shortest transaction:	        0.00
+ 
+
+
+
+|| Spring Boot MySQL Read
+============================================
+siege -r5 -c10 -d1 http://localhost:13030/read
+** SIEGE 4.0.4
+** Preparing 10 concurrent users for battle.
+The server is now under siege...
+Transactions:		          50 hits
+Availability:		      100.00 %
+Elapsed time:		        4.03 secs
+Data transferred:	        0.00 MB
+Response time:		        0.21 secs
+Transaction rate:	       12.41 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        2.55
+Successful transactions:          50
+Failed transactions:	           0
+Longest transaction:	        0.60
+Shortest transaction:	        0.08
+ 
+|| Node JS MySQL Read
+============================================
+siege -r5 -c10 -d1 http://localhost:13031/read
+** SIEGE 4.0.4
+** Preparing 10 concurrent users for battle.
+The server is now under siege...
+Transactions:		          50 hits
+Availability:		      100.00 %
+Elapsed time:		        6.19 secs
+Data transferred:	        0.00 MB
+Response time:		        0.40 secs
+Transaction rate:	        8.08 trans/sec
+Throughput:		        0.00 MB/sec
+Concurrency:		        3.25
+Successful transactions:          50
+Failed transactions:	           0
+Longest transaction:	        0.82
+Shortest transaction:	        0.08
+ 
