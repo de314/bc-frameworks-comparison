@@ -1,39 +1,13 @@
 package com.bettercloud.perf.churchspringboot.db;
 
-import com.bettercloud.perf.churchspringboot.Entry;
-import com.github.davidmoten.rx.jdbc.Database;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import rx.RxReactiveStreams;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-@Service
-public class MessageRepository {
-    private final Database database;
-    private static final String AGGRAGATE_QUERY = "SELECT message, COUNT(message) as 'count' FROM t1 GROUP BY message";
-    private static final String INSERT_QUERY = "INSERT INTO t1 (message) VALUES (?)";
+import java.util.List;
 
-
-    public MessageRepository(Database database) {
-        this.database = database;
-    }
-
-    public Mono<Entry> save(String message) {
-
-        return Mono.from(RxReactiveStreams.toPublisher(database.update(INSERT_QUERY)
-                .parameter(message)
-                .returnGeneratedKeys()
-                .getAs(Long.class)
-                .toSingle()))
-                .map(key -> new Entry(key, message));
-    }
-
-    public Flux<MessageGroup> getAggregate() {
-
-        return Flux.from(RxReactiveStreams.toPublisher(database.select(AGGRAGATE_QUERY)
-                .autoMap(MessageGroup.class)));
-
-
-    }
-
+@Repository
+public interface MessageRepository extends CrudRepository<Message, Long> {
+    @Query("SELECT new com.bettercloud.perf.churchspringboot.db.MessageGroup(message, COUNT(message)) FROM t1 GROUP BY message")
+    List<MessageGroup> groupByMessage();
 }

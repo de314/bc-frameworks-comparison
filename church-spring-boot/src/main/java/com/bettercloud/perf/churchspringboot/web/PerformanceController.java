@@ -1,16 +1,14 @@
 package com.bettercloud.perf.churchspringboot.web;
 
-import com.bettercloud.perf.churchspringboot.Entry;
-import com.bettercloud.perf.churchspringboot.Fibonacci;
+import com.bettercloud.perf.churchspringboot.db.Message;
 import com.bettercloud.perf.churchspringboot.db.MessageGroup;
 import com.bettercloud.perf.churchspringboot.db.MessageRepository;
-import com.github.davidmoten.rx.jdbc.Database;
+import com.bettercloud.perf.churchspringboot.fib.Fibonacci;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
+import reactor.core.scheduler.Schedulers;
 
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -18,6 +16,7 @@ import java.util.Map;
 
 @RestController
 public class PerformanceController {
+    private final MessageRepository repo;
     private final Fibonacci fibonacci;
     private final MessageRepository messageRepository;
     private final SecureRandom secureRandom = new SecureRandom();
@@ -28,11 +27,10 @@ public class PerformanceController {
             "That's not a bug..."
     };
 
-    private final Database db;
-    public PerformanceController(Fibonacci fibonacci, MessageRepository messageRepository, Database db) {
+    public PerformanceController(MessageRepository repo, Fibonacci fibonacci, MessageRepository messageRepository) {
+        this.repo = repo;
         this.fibonacci = fibonacci;
         this.messageRepository = messageRepository;
-        this.db = db;
     }
 
     @GetMapping("noop")
@@ -54,21 +52,23 @@ public class PerformanceController {
     }
 
     @GetMapping("write")
-    public Mono<Entry> write() {
+    public Mono<Message> write() {
         final String message = randomMessage();
-        return messageRepository.save(message);
+        return Mono.fromCallable(() -> repo.save(new Message(null, message)))
+                .subscribeOn(Schedulers.elastic());
     }
 
     @GetMapping("read")
     public Mono<Map<String, Long>> read() {
-        return messageRepository.getAggregate()
-                .collectMap(MessageGroup::getMessage, MessageGroup::getCount);
+        return Mono.fromCallable(() -> repo.groupByMessage())
+                .flatMapMany(Flux::fromIterable)
+                .collectMap(MessageGroup::getMessage, MessageGroup::getCount)
+                .subscribeOn(Schedulers.elastic());
     }
 
     private String randomMessage() {
         return MESSAGES[(secureRandom.nextInt(MESSAGES.length))];
     }
-
 
 
 }
