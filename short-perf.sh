@@ -26,7 +26,6 @@ function run_test() {
   echo '============================================'
   echo "siege -r$2 -c$3 -d1 http://localhost:13032/$4"
   siege -r$2 -c$3 -d1 "http://localhost:13032/$4" >> $OUTPUT_PATH
-
 }
 
 function reset_for_next_test() {
