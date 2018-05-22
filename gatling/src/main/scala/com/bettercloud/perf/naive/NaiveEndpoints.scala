@@ -1,15 +1,42 @@
 package com.bettercloud.perf.naive
 
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.core.controller.inject.InjectionStep
+import io.gatling.core.structure.{ChainBuilder, ScenarioBuilder}
 import io.gatling.http.Predef._
+
+import scala.concurrent.duration._
 
 object NaiveEndpoints {
 
-  val read = exec(http("read").get("/read"))
-  val write = exec(http("write").get("/write"))
-  val cpu = exec(http("cpu").get("/cpu"))
-  val noop = exec(http("noop").get("/noop"))
+  def read(name: String): ChainBuilder = exec(
+    http(s"read-$name")
+      .get("/read")
+  )
+
+  def write(name: String): ChainBuilder = exec(
+    http(s"write-$name")
+      .get("/write")
+  )
+
+  def cpu(name: String): ChainBuilder = exec(
+    http(s"cpu-$name")
+      .get("/cpu")
+  )
+
+  def noop(name: String): ChainBuilder = exec(
+    http(s"noop-$name")
+      .get("/noop")
+  )
+
+}
+
+object NaiveInjectionSteps {
+
+  val steps: Iterable[InjectionStep] = Iterable(
+    constantUsersPerSec(10) during (30 seconds),
+    rampUsersPerSec(10) to 30 during (30 seconds)
+  )
 
 }
 
@@ -18,15 +45,11 @@ object NaiveEndpoints {
   */
 object NaiveScenario {
 
-  def scen(name: String): ScenarioBuilder = {
-    scenario(name)
-      .exec(NaiveEndpoints.read)
-      .pause(0, 3)
-      .exec(NaiveEndpoints.write)
-      .pause(0, 3)
-      .exec(NaiveEndpoints.cpu)
-      .pause(0, 3)
-      .exec(NaiveEndpoints.noop)
+  def readWriteScen(name: String): ScenarioBuilder = {
+    scenario(name).randomSwitch(
+      90.0 -> NaiveEndpoints.read(name),
+      10.0 -> NaiveEndpoints.write(name)
+    )
   }
 
 }

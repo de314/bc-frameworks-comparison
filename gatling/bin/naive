@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+[ -n "${DEBUG:-}" ] && set -x
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_NAME="$(basename "$0")"
 
@@ -9,9 +11,23 @@ source "${SCRIPT_DIR}/common.bash"
 
 main() {
   compile_jar "$@"
+
+  log_info "Cleaning out previous reports..."
+  clean_results
+  log_info "Done."
+
   log_info "Executing load test for naive spring boot..."
-  gatling -s "com.bettercloud.perf.naive.NaiveSpringBootSimulation"
-  gatling -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
+  gatling -nr -s "com.bettercloud.perf.naive.NaiveSpringBootSimulation"
+
+  log_info "Waiting for 10 seconds to start next test..."
+  sleep 10
+  log_info "Starting next test..."
+
+  gatling -nr -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
+  log_info "Finished with simulations."
+
+  log_info "Generating aggregate report."
+  generate_reports "naive"
   log_info "Done."
 }
 
