@@ -49,9 +49,41 @@ Uses out of the box `express` and `mysql` npm modules.
 
 I used [siege](https://www.joedog.org/siege-home/) for performance testing.
 
-## Scripts
-
 ```bash
 ./short-perf.sh
 ./perf.sh
 ```
+
+## Gatling
+
+Gatling is a performance testing tool can simulate a large number of user with complex behavior. [Docs](https://gatling.io/docs/current/).
+
+It is written and Scala, which provides type safety and great integration with IDE.
+
+#### Start
+
+To run the tests for naive endpoints:
+
+```bash
+cd gatling
+./bin/naive
+```
+
+This will compile a jar and initiate the `naive` load tests. The simulations that are found in the `src/` directory.
+
+To run one-off gatling commands, you can use the following script:
+
+```
+./bin/gatling <options>
+```
+
+#### Example
+
+To run the simulation found in `src/main/scala/com/bettercloud/perf/naive/NaiveExpressSimulation.scala` execute the following command:
+
+```
+./bin/gatling -s com.bettercloud.perf.naive.NaiveExpressSimulation
+```
+
+The valid options can be seen here: https://gatling.io/docs/2.3/general/configuration/#command-line-options
+

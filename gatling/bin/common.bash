@@ -46,13 +46,7 @@ _java() {
 # Compiles gatling shadow jar
 # Run gradle task 'shadowJar', configured in build.gradle
 compile_jar() {
-  if [ ! -f "${GATLING_JAR}" ]; then
-    log_info "Jar not found for gatling. Building now with gradle..."
-    "${GRADLE}" shadowJar
-    log_info "Done."
-  else
-    log_info "Jar found at ${GATLING_JAR}"
-  fi
+  "${GRADLE}" clean shadowJar
 }
 
 # Pass the compiled gatling jar to the classpath.
