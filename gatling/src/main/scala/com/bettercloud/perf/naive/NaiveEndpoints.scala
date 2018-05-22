@@ -21,12 +21,13 @@ object NaiveScenario {
   def scen(name: String): ScenarioBuilder = {
     scenario(name)
       .exec(NaiveEndpoints.read)
-      .pause(0, 3)
+      .pause(5)
       .exec(NaiveEndpoints.write)
-      .pause(0, 3)
+      .pause(5)
       .exec(NaiveEndpoints.cpu)
-      .pause(0, 3)
+      .pause(5)
       .exec(NaiveEndpoints.noop)
+      .pause(5)
   }
 
 }
