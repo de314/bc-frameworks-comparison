@@ -23,7 +23,13 @@ main() {
   sleep 10
   log_info "Starting next test..."
 
-  gatling -nr -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
+  gatling -s "com.bettercloud.perf.naive.ChurchSpringBootSimulation"
+
+  log_info "Waiting for 10 seconds to start next test..."
+  sleep 10
+  log_info "Starting next test..."
+
+  gatling -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
   log_info "Finished with simulations."
 
   log_info "Generating aggregate report."

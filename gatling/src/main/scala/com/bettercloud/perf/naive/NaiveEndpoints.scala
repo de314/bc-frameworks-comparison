@@ -52,4 +52,16 @@ object NaiveScenario {
     )
   }
 
+  def allScen(name: String): ScenarioBuilder = {
+    scenario(name)
+      .exec(NaiveEndpoints.read(name))
+      .pause(5)
+      .exec(NaiveEndpoints.write(name))
+      .pause(5)
+      .exec(NaiveEndpoints.cpu(name))
+      .pause(5)
+      .exec(NaiveEndpoints.noop(name))
+      .pause(5)
+  }
+
 }

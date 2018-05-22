@@ -18,3 +18,11 @@ object SpringConfiguration {
     .acceptHeader("application/json")
 
 }
+
+object ChurchSpringConfiguration {
+
+  val conf = http
+    .baseURL("http://localhost:13032")
+    .acceptHeader("application/json")
+
+}
