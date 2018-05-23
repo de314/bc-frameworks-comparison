@@ -9,6 +9,11 @@ SCRIPT_NAME="$(basename "$0")"
 
 source "${SCRIPT_DIR}/common.bash"
 
+_sleep() {
+  log_info "Waiting for 10 seconds to start next test..."
+  sleep 10
+}
+
 main() {
   compile_jar "$@"
 
@@ -19,20 +24,19 @@ main() {
   log_info "Executing load test for naive spring boot..."
   gatling -nr -s "com.bettercloud.perf.naive.NaiveSpringBootSimulation"
 
-  log_info "Waiting for 10 seconds to start next test..."
-  sleep 10
+  _sleep
+
   log_info "Starting next test..."
+  gatling -nr -s "com.bettercloud.perf.naive.ChurchSpringBootSimulation"
 
-  gatling -s "com.bettercloud.perf.naive.ChurchSpringBootSimulation"
+  _sleep
 
-  log_info "Waiting for 10 seconds to start next test..."
-  sleep 10
   log_info "Starting next test..."
+  gatling -nr -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
 
-  gatling -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
   log_info "Finished with simulations."
 
-  log_info "Generating aggregate report."
+  log_info "Generating aggregate report..."
   generate_reports "naive"
   log_info "Done."
 }
