@@ -21,6 +21,8 @@ DEFAULT_JAVA_OPTS="${DEFAULT_JAVA_OPTS} -XX:+PerfDisableSharedMem -XX:+Aggressiv
 DEFAULT_JAVA_OPTS="${DEFAULT_JAVA_OPTS} -XX:+HeapDumpOnOutOfMemoryError"
 DEFAULT_JAVA_OPTS="${DEFAULT_JAVA_OPTS} -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false"
 
+GATLING_RESULTS_DIR="${SCRIPT_DIR}/../results/"
+
 log() {
   local readonly level="$1"
   local readonly message="$2"
@@ -53,4 +55,18 @@ compile_jar() {
 # Arguments that are passed should be valid gatling arguments: https://gatling.io/docs/2.3/general/configuration/#command-line-options
 gatling() {
   _java $DEFAULT_JAVA_OPTS $JAVA_OPTS -cp $GATLING_JAR "io.gatling.app.Gatling" "$@"
+}
+
+clean_results() {
+  ([ -d "${GATLING_RESULTS_DIR}" ] && rm -rf ${GATLING_RESULTS_DIR}*simulation*) || true
+}
+
+generate_reports() {
+  readonly prefix="$1"
+  readonly reports_dir="${GATLING_RESULTS_DIR}reports-${prefix}/"
+  ([ -d "${reports_dir}" ] && rm -f "${reports_dir}"*) || true
+  mkdir -p "${reports_dir}"
+  ls -t "${GATLING_RESULTS_DIR}" | grep -v 'reports'| sed 's/\/$//' \
+    | xargs -I {} cp ${GATLING_RESULTS_DIR}{}/simulation.log ${reports_dir}/simulation-{}.log
+  gatling -ro "reports-$prefix"
 }

@@ -8,7 +8,7 @@ class ChurchSpringBootSimulation extends Simulation {
 
   setUp(
     NaiveScenario
-      .scen("church")
+      .allScen("church")
       .inject(
         constantUsersPerSec(5) during (60 seconds),
         rampUsersPerSec(5) to 10 during (30 seconds),
