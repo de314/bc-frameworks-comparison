@@ -8,7 +8,14 @@ import io.vertx.ext.sql.SQLConnection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class DataConfig {
+public class Utils {
+
+    private static final String[] MESSAGES = new String[] {
+        "Hello, World!",
+        "foobar",
+        "fizzbuzz",
+        "That's not a bug..."
+    };
 
     public static JDBCClient createJdbcClient(final Vertx vertx) {
         return JDBCClient.createShared(vertx, new JsonObject()
@@ -42,6 +49,10 @@ public class DataConfig {
         return i <= 1
             ? 1
             : generateFibonocci(i - 1) + generateFibonocci(i - 2);
+    }
+
+    public static String generateRandomMessage() {
+        return MESSAGES[(int) (Math.random() * MESSAGES.length)];
     }
 
 }
