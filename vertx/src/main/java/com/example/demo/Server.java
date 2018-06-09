@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.jdbc.JDBCClient;
+import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.SQLOptions;
 import io.vertx.ext.sql.UpdateResult;
@@ -65,6 +66,24 @@ public class Server {
                                 .end("Added " + updateResult.getUpdated() + " rows, with ID(s): " + updateResult.getKeys().toString());
                         }
                     });
+            }
+        }));
+
+        router.route("/read").handler(routingCtx -> jdbcClient.getConnection(connectionCtx -> {
+            if (connectionCtx.failed()) {
+                routingCtx.fail(connectionCtx.cause());
+            } else {
+                final SQLConnection conn = connectionCtx.result();
+                conn.query("SELECT message, COUNT(message) as 'count' FROM t1 GROUP BY message", sqlCtx -> {
+                    if (sqlCtx.failed()) {
+                        routingCtx.fail(sqlCtx.cause());
+                    } else {
+                        final ResultSet rs = sqlCtx.result();
+                        routingCtx.response()
+                            .putHeader("content-type", "text/plain")
+                            .end(rs.getResults().toString());
+                    }
+                });
             }
         }));
 

@@ -13,6 +13,7 @@ main() {
   gatling -s "com.bettercloud.perf.naive.NaiveSpringBootSimulation"
   gatling -s "com.bettercloud.perf.naive.ChurchSpringBootSimulation"
   gatling -s "com.bettercloud.perf.naive.NaiveExpressSimulation"
+  gatling -s "com.bettercloud.perf.naive.VertxSimulation"
   log_info "Done."
 }
 
