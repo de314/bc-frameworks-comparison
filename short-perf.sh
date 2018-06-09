@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT_FILENAME=`date +%Y-%m-%d-%H:%M:%S-short-perf-results.txt`
+OUTPUT_FILENAME=`date +%Y-%m-%d-%H-%M-%S-short-perf-results.txt`
 OUTPUT_PATH="results/$OUTPUT_FILENAME"
 exec 1>$OUTPUT_PATH
 exec 2>&1
