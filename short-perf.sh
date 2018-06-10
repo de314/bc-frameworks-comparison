@@ -32,8 +32,8 @@ function run_test() {
 
   echo "|| Perkins Vert.x $1"
   echo '============================================'
-  echo "siege -r$2 -c$3 -d1 http://localhost:8080/$4"
-  siege -r$2 -c$3 -d1 "http://localhost:8080/$4" >> $OUTPUT_PATH
+  echo "siege -r$2 -c$3 -d1 http://localhost:13033/$4"
+  siege -r$2 -c$3 -d1 "http://localhost:13033/$4" >> $OUTPUT_PATH
 }
 
 function reset_for_next_test() {

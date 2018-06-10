@@ -30,7 +30,7 @@ object ChurchSpringConfiguration {
 object VertxConfiguration {
 
   val conf = http
-    .baseURL("http://localhost:8080")
+    .baseURL("http://localhost:13033")
     .acceptHeader("application/json")
 
 }
