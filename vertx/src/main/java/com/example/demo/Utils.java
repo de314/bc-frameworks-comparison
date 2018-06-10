@@ -2,14 +2,19 @@ package com.example.demo;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLConnection;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class Utils {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(Utils.class);
     private static final String[] MESSAGES = new String[] {
         "Hello, World!",
         "foobar",
@@ -17,15 +22,25 @@ public class Utils {
         "That's not a bug..."
     };
 
-    public static JDBCClient createJdbcClient(final Vertx vertx) {
+    public static Properties loadProperties() {
+        final Properties properties = new Properties();
+        try {
+            properties.load(Server.class.getClassLoader().getResourceAsStream("server.properties"));
+        } catch (IOException e) {
+            LOGGER.error("Could not load properties", e);
+        }
+        return properties;
+    }
+
+    public static JDBCClient createJdbcClient(final Vertx vertx, final Properties properties) {
         return JDBCClient.createShared(vertx, new JsonObject()
-            .put("url", "jdbc:mysql://127.0.0.1:3306/test")  // TODO: Move to external properties
-            .put("driver_class", "com.mysql.cj.jdbc.Driver")
-            .put("user", "root")
-            .put("password", "root")
-            .put("initial_pool_size", 25)
-            .put("min_pool_size", 25)
-            .put("max_pool_size", 25)
+            .put("url", properties.getProperty("jdbc.url"))
+            .put("driver_class", properties.getProperty("jdbc.driver_class"))
+            .put("user", properties.getProperty("jdbc.user"))
+            .put("password", properties.getProperty("jdbc.password"))
+            .put("initial_pool_size", Integer.parseInt(properties.getProperty("jdbc.initial_pool_size")))
+            .put("min_pool_size", Integer.parseInt(properties.getProperty("jdbc.min_pool_size")))
+            .put("max_pool_size", Integer.parseInt(properties.getProperty("jdbc.max_pool_size")))
         );
     }
 

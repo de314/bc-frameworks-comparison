@@ -1,10 +1,35 @@
 = Vert.x
 :toc:
 
-== Section 1
+== Description
+This example implements the four test endpoints using http://vertx.io[Vert.x], a reactive-first
+application framework hosted by the Eclipse Foundation and primarily sponsored by RedHat.
 
+Vert.x has two main characteristics that it hangs its hat on:
 
+1. Being polyglot.  It has idiomatic first-class API's for 7 different languages (e.g. Java,
+   JavaScript, Ruby, Scala, etc)
 
-== Section 2
+2. Being relatively light.  This example pulls in multiple dependencies, and is still ~10MB.
 
+3. Getting high performance with an approach similar to Node.js.  Uses very few threads for the
+   outermost event loop, with the caveat that application logic needs to be non-blocking
+   (although it has mechanisms for adapting synchronous code).
+
+As part of #3 there, Vert.x offers an "asynchronous" JDBC driver.  Of course, JDBC is a
+fundamentally synchronous API, so their driver wrapper _cheats_ by delegating operations to an
+internal worker thread pool.  But it often ends up being more efficient in benchmarks, even if
+it's not as good as true non-blocking native client that supports multiplexing down at the
+connection level.
+
+== Running the application
+
+You can either use the Gradle `run` task, or simply execute the `com.example.demo.Server`
+class directly.
+
+== Resources
+
+* https://vertx.io/docs/vertx-core/java/[Vert.x Core documentation]
+* https://vertx.io/docs/vertx-web/java/[Vert.x Web documentation]
+* https://vertx.io/docs/vertx-jdbc-client/java/[Vert.x Async JDBC Client documentation]
 

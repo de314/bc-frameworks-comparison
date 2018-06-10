@@ -7,7 +7,7 @@ class VertxSimulation extends Simulation {
 
   setUp(
     NaiveScenario
-      .scen("Vert.x")
+      .scen("vertx")
       .inject(
         constantUsersPerSec(5) during (60 seconds),
         rampUsersPerSec(5) to 10 during (30 seconds),
