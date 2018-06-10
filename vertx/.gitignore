@@ -163,4 +163,4 @@ nbdist/
 
 # End of https://www.gitignore.io/api/macos,maven,eclipse,netbeans,intellij+iml,visualstudiocode
 
-src/main/resources/server.properties
+# src/main/resources/server.properties
