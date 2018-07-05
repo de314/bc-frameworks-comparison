@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT_FILENAME=`date +%Y-%m-%d-%H:%M:%S-short-perf-results.txt`
+OUTPUT_FILENAME=`date +%Y-%m-%d-%H-%M-%S-short-perf-results.txt`
 OUTPUT_PATH="results/$OUTPUT_FILENAME"
 exec 1>$OUTPUT_PATH
 exec 2>&1
@@ -26,6 +26,14 @@ function run_test() {
   echo '============================================'
   echo "siege -r$2 -c$3 -d1 http://localhost:13032/$4"
   siege -r$2 -c$3 -d1 "http://localhost:13032/$4" >> $OUTPUT_PATH
+
+  sleep 1
+  echo ''
+
+  echo "|| Perkins Vert.x $1"
+  echo '============================================'
+  echo "siege -r$2 -c$3 -d1 http://localhost:13033/$4"
+  siege -r$2 -c$3 -d1 "http://localhost:13033/$4" >> $OUTPUT_PATH
 }
 
 function reset_for_next_test() {

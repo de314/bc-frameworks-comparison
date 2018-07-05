@@ -1,1 +1,8 @@
+.gradle
+.idea
+.vertx
+gradle
+/gradlew
+/gradlew.bat
+results
 gatling/results

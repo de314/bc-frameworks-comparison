@@ -26,3 +26,11 @@ object ChurchSpringConfiguration {
     .acceptHeader("application/json")
 
 }
+
+object VertxConfiguration {
+
+  val conf = http
+    .baseURL("http://localhost:13033")
+    .acceptHeader("application/json")
+
+}
